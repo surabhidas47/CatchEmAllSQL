@@ -31,3 +31,75 @@ How many pokemon have a secondary type?
         -> WHERE pokemons.secondary_type IS NOT NULL;
 
 What is each pokemon's primary type?
+
+    SELECT p.name,p.id, t.name
+        -> FROM pokemons p
+        -> JOIN types t
+        -> ON t.id= p.primary_type;
+
+What is Rufflet's secondary type?
+
+    SELECT p.name AS pokemon_name , t.name AS secondary_name
+    FROM pokemons p
+    JOIN types t
+    ON t.id =p.secondary_type
+    WHERE p.name = ('Rufflet');
+
+What are the names of the pokemon that belong to the trainer with trainerID 303?
+
+ Wailord
+ Vileplume
+
+    SELECT p.name AS trainer303_poky
+    FROM pokemons p
+    JOIN pokemon_trainer pt
+    ON pt.pokemon_id = p.id
+    WHERE pt.trainerID = 303;
+
+How many pokemon have a secondary type Poison
+
+    SELECT count(p.secondary_type = 'Poison') AS Poison_Poky
+    FROM pokemons p;
+
+What are all the primary types and how many pokemon have that type?
+
+
+
+    SELECT t.name AS primary_type, COUNT(*) AS num_of_pokemon
+    FROM pokemons p
+    JOIN types t
+    ON p.primary_type = t.id
+    GROUP BY p.primary_type, t.name;
+
+    or
+
+
+    SELECT t.name AS primary_type, COUNT(p.name) AS num_of_pokemon
+    FROM pokemons p
+    JOIN types t
+    ON p.primary_type = t.id
+    GROUP BY p.primary_type, t.name;
+
+    +--------------+----------------+
+    | primary_type | num_of_pokemon |
+    +--------------+----------------+
+    | Normal       |             90 |
+    | Water        |             95 |
+    | Grass        |             59 |
+    | Rock         |             38 |
+    | Fire         |             38 |
+    | Ground       |             29 |
+    | Poison       |             27 |
+    | Bug          |             61 |
+    | Electric     |             35 |
+    | Dragon       |             22 |
+    | Steel        |             19 |
+    | Dark         |             24 |
+    | Fighting     |             25 |
+    | Psychic      |             38 |
+    | Ghost        |             19 |
+    | Fairy        |             14 |
+    | Ice          |             22 |
+    | Flying       |              1 |
+    +--------------+----------------+
+
