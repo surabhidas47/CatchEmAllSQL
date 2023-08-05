@@ -63,22 +63,12 @@ How many pokemon have a secondary type Poison
 
 What are all the primary types and how many pokemon have that type?
 
-
-
     SELECT t.name AS primary_type, COUNT(*) AS num_of_pokemon
     FROM pokemons p
     JOIN types t
     ON p.primary_type = t.id
-    GROUP BY p.primary_type, t.name;
+    GROUP BY p.primary_type;
 
-    or
-
-
-    SELECT t.name AS primary_type, COUNT(p.name) AS num_of_pokemon
-    FROM pokemons p
-    JOIN types t
-    ON p.primary_type = t.id
-    GROUP BY p.primary_type, t.name;
 
     +--------------+----------------+
     | primary_type | num_of_pokemon |
@@ -102,4 +92,41 @@ What are all the primary types and how many pokemon have that type?
     | Ice          |             22 |
     | Flying       |              1 |
     +--------------+----------------+
+
+How many pokemon at level 100 does each trainer with at least one
+level 100 pokemone have? (Hint: your query should not display a trainer
+
+SELECT pt.trainerID AS trainers, COUNT(*) AS count
+FROM pokemon_trainer pt
+WHERE pt.pokelevel >=100
+GROUP BY pt.trainerID;
+
+How many pokemon only belong to one trainer and no other?
+
+//this results in 13 rows, all the pokemons having 1 trainer
+SELECT COUNT(pt.pokemon_id)
+FROM pokemon_trainer pt
+GROUP BY pt.pokemon_id
+HAVING COUNT(pt.trainerID) = 1;
+
+
+//outer query that wraps around counts the rows of inner query
+SELECT COUNT(*) AS count
+FROM (
+    SELECT pokemon_id
+    FROM pokemon_trainer
+    GROUP BY pokemon_id
+    HAVING COUNT(trainerID) = 1
+) AS single_trainer_pokemon;
+
+Final:
+
+
+
+SELECT p.name AS Pokemon Name,
+t.trainername AS Trainer Name,
+pt.pokelevel AS Level,
+p.primary_type AS Primary Type,
+p.secondary_type ;
+
 
